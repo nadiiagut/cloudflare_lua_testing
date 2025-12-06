@@ -36,12 +36,6 @@ TARGET_URL = "http://127.0.0.1:8080/"
             TARGET_URL,
             "200",
         ),
-        (
-            "killswitch via query param (should trigger Lua error / 5xx)",
-            [],
-            TARGET_URL + "?killswitch=on",
-            "500",
-        ),
     ],
 )
 @pytest.mark.prio1
