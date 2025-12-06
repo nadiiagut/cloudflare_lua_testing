@@ -1,0 +1,24 @@
+worker_processes  1;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    lua_package_path  "./nginx/lua/?.lua;;";
+
+    # Minimal HTTP forward proxy (HTTP only, no CONNECT):
+    #   curl -x 127.0.0.1:8081 http://127.0.0.1:8080/
+
+    server {
+        listen 127.0.0.1:8081;
+
+        location / {
+            access_by_lua_file ./nginx/lua/example_rule.lua;
+
+            proxy_pass $scheme://$http_host$request_uri;
+            proxy_set_header Host $http_host;
+            proxy_set_header X-Real-IP $remote_addr;
+        }
+    }
+}
